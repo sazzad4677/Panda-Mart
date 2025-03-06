@@ -9,22 +9,21 @@ import {
     useForm,
     UseFormReturn
 } from "react-hook-form";
-import {Form} from "@/components/ui/form.tsx";
-import {GenericFormContext} from "@/components/form/GenericFormContext.ts";
+import {Form} from "@/components/ui/form";
 import {z, ZodType} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
-import TextField from "@/components/form/fields/TextField.tsx";
-import {FormReset} from "@/components/form/fields/FormReset.tsx";
-import {SelectField} from "@/components/form/fields/SelectField.tsx";
-import DateField from "@/components/form/fields/DateField.tsx";
-import ImageField from "@/components/form/fields/ImageField.tsx";
-import {PasswordField} from "@/components/form/fields/PasswordField.tsx";
-import {SliderField} from "@/components/form/fields/Slider.tsx";
-import SearchField from "@/components/form/fields/SearchField.tsx";
-import CheckBoxField from "@/components/form/fields/CheckBoxField.tsx";
-import TextAreaField from "@/components/form/fields/TextAreaField.tsx";
-import SwitchField from "@/components/form/fields/SwitchField.tsx";
-import AutoResizeTextArea from '@/components/form/fields/AutoResizeTextArea.tsx';
+import TextField from "@/components/shared/form/fields/TextField";
+import TextAreaField from "@/components/shared/form/fields/TextAreaField";
+import {SelectField} from "@/components/shared/form/fields/SelectField";
+import {FormReset} from "@/components/shared/form/fields/FormReset";
+import DateField from "@/components/shared/form/fields/DateField";
+import ImageField from "@/components/shared/form/fields/ImageField";
+import {PasswordField} from "@/components/shared/form/fields/PasswordField";
+import {SliderField} from "@/components/shared/form/fields/Slider";
+import SearchField from "@/components/shared/form/fields/SearchField";
+import CheckBoxField from "@/components/shared/form/fields/CheckBoxField";
+import SwitchField from "@/components/shared/form/fields/SwitchField";
+import {GenericFormContext} from "@/components/shared/form/GenericFormContext";
 
 // eslint-disable-next-line
 export type TGenericFormRef<TFormValues extends FieldValues = any> = {
@@ -90,4 +89,3 @@ GenericForm.SearchField = SearchField
 GenericForm.Checkbox = CheckBoxField
 GenericForm.Switch = SwitchField
 GenericForm.Image = ImageField
-GenericForm.AutoResizeTextArea = AutoResizeTextArea
