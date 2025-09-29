@@ -1,8 +1,7 @@
-
-import { cn } from '@/lib/utils';
-import { Eye, EyeOff } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { FieldValues, Path, useFormContext } from 'react-hook-form';
+import {cn} from '@/lib/utils';
+import {Eye, EyeOff} from 'lucide-react';
+import {useEffect, useState} from 'react';
+import {FieldValues, Path, useFormContext} from 'react-hook-form';
 import {
     FormControl,
     FormField,
@@ -10,7 +9,7 @@ import {
     FormLabel,
     FormMessage,
 } from '../../../ui/form';
-import { Input } from '../../../ui/input';
+import {Input} from '../../../ui/input';
 import {PasswordStrength} from "@/components/shared/form/fields/password-helpers/PasswordStrength";
 import {PasswordMessage} from "@/components/shared/form/fields/password-helpers/PasswordMessage";
 
@@ -25,6 +24,7 @@ type PasswordFieldProps<T extends FieldValues> = {
     hideIcon?: React.ReactNode;
     showStrength?: boolean;
     showMessage?: boolean;
+    autoComplete?: string;
 };
 
 type Requirement = {
@@ -33,36 +33,37 @@ type Requirement = {
 };
 
 const requirements: Requirement[] = [
-    { regex: /.{6,}/, label: 'At least 6 characters' },
-    { regex: /[A-Z]/, label: 'At least one uppercase letter' },
-    { regex: /[a-z]/, label: 'At least one lowercase letter' },
-    { regex: /[0-9]/, label: 'At least one number' },
-    { regex: /[^A-Za-z0-9]/, label: 'At least one special character' },
+    {regex: /.{6,}/, label: 'At least 6 characters'},
+    {regex: /[A-Z]/, label: 'At least one uppercase letter'},
+    {regex: /[a-z]/, label: 'At least one lowercase letter'},
+    {regex: /[0-9]/, label: 'At least one number'},
+    {regex: /[^A-Za-z0-9]/, label: 'At least one special character'},
 ];
 
 export const PasswordField = <T extends FieldValues>({
                                                          name,
                                                          label,
                                                          placeholder = 'Enter password',
+                                                         autoComplete = "current-password",
                                                          required = false,
                                                          className,
                                                          icon = true,
-                                                         showIcon = <Eye size={18} />,
-                                                         hideIcon = <EyeOff size={18} />,
+                                                         showIcon = <Eye size={18}/>,
+                                                         hideIcon = <EyeOff size={18}/>,
                                                          showMessage = false,
                                                          showStrength = false,
                                                      }: PasswordFieldProps<T>) => {
-    const { control, watch } = useFormContext<T>();
+    const {control, watch} = useFormContext<T>();
     const password = watch(name);
 
-    const { showPassword, setShowPassword, strength, checks } =
+    const {showPassword, setShowPassword, strength, checks} =
         usePasswordField(password);
 
     return (
         <FormField
             control={control}
             name={name}
-            render={({ field }) => (
+            render={({field}) => (
                 <FormItem className={cn(className)}>
                     {label && (
                         <FormLabel>
@@ -78,7 +79,7 @@ export const PasswordField = <T extends FieldValues>({
                                 type={showPassword ? 'text' : 'password'}
                                 placeholder={placeholder}
                                 className="pr-10"
-                                autoComplete={"current-password"}
+                                autoComplete={autoComplete}
                             />
                             {icon && (
                                 <button
@@ -93,14 +94,14 @@ export const PasswordField = <T extends FieldValues>({
                     </FormControl>
 
                     <div className="space-y-2">
-                        {showStrength && <PasswordStrength strength={strength} />}
+                        {showStrength && <PasswordStrength strength={strength}/>}
 
                         {showMessage && (
-                            <PasswordMessage requirements={requirements} checks={checks} />
+                            <PasswordMessage requirements={requirements} checks={checks}/>
                         )}
                     </div>
 
-                    <FormMessage />
+                    <FormMessage/>
                 </FormItem>
             )}
         />

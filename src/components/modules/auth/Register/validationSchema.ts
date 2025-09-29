@@ -9,7 +9,7 @@ const passwordRequirements = {
 };
 
 export const registerSchema = z.object({
-    firstName: z.string().nonempty({ message: "First Name is required"}),
+    name: z.string().nonempty({ message: "First Name is required"}),
     lastName: z.string().nonempty({ message: "Last Name is required" }),
 
     email: z.string().email({ message: "Email is invalid"}).nonempty({ message: "Email is required"}),
@@ -36,5 +36,7 @@ export const registerSchema = z.object({
         'Password must contain at least one special character'
     ),
     confirmPassword: z.string().nonempty({ message: "Confirm Password" }),
-    terms: z.string().nonempty({ message: "Terms" }),
+    acceptedTerms: z.boolean().refine(val => val, {
+        message: "You must accept the terms to continue",
+    }),
 })

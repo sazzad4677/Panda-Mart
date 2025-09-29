@@ -1,5 +1,6 @@
 import { Facebook, Instagram, X } from "lucide-react";
 import Link from "next/link";
+import Logo from "@/app/assets/pngs/Logo";
 
 const Footer = () => {
     const navLinks = [
@@ -23,8 +24,7 @@ const Footer = () => {
                 <div className="flex flex-col items-center mb-6">
                     <div className="flex items-center space-x-2">
                         <h1 className="text-2xl font-black flex items-center">
-                            {/*<Logo />*/}
-                            Panda Mart
+                           <Logo/>
                         </h1>
                     </div>
                     <p className="text-gray-600 mt-3 w-1/2">

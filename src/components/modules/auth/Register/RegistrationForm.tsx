@@ -1,91 +1,155 @@
 "use client"
-import type React from "react"
+import React, {useRef} from "react"
 import {Button} from "@/components/ui/button"
-import {Label} from "@/components/ui/label"
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card"
-import {GenericForm} from "@/components/shared/form/GenericForm";
+import {CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card"
+import {GenericForm, TGenericFormRef} from "@/components/shared/form/GenericForm";
 import {z} from "zod";
 import {registerSchema} from "@/components/modules/auth/Register/validationSchema";
+import Link from "next/link";
+import {register} from "@/services/AuthService";
 
 type TRegister = z.infer<typeof registerSchema>
 
 const initialValues = {
     email: "",
-    password: "",
-    firstName: "",
+    name: "",
     lastName: "",
+    password: "",
     confirmPassword: "",
+    acceptedTerms: false,
 }
 
 export default function RegistrationForm() {
 
+    const formRef = useRef<TGenericFormRef<TRegister>>(null);
+    const isSubmitting = formRef.current?.formState.isSubmitting;
 
-    const onSubmit = (e: TRegister) => {
+    const onSubmit = async(e: TRegister) => {
+        // console.log(e)
+        const res = await register(e)
+        console.log(res)
+    }
 
+    //  Fill out form with test data
+    const fillOutForm = () => {
+        const testValues = {
+            name: "John",
+            lastName: "Doe",
+            email: "john.doe@example.com",
+            password: "Password123!",
+            confirmPassword: "Password123!",
+            acceptedTerms: true,
+        }
+        formRef.current?.reset(testValues);
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-purple-50 p-4">
-            <Card className="w-full max-w-md shadow-xl border-0 overflow-hidden">
-                <CardHeader className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
-                    <CardTitle className="text-2xl font-bold">Create an Account</CardTitle>
-                    <CardDescription className="text-indigo-100">Join our community today</CardDescription>
-                </CardHeader>
-                <GenericForm initialValues={initialValues} schema={registerSchema} onSubmit={onSubmit}>
-                    <CardContent className="space-y-4 pt-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <GenericForm.Text<TRegister> name={"firstName"} label={"First Name"}
-                                                             placeholder={"John"}/>
-                            </div>
-                            <div className="space-y-2">
-                                <GenericForm.Text<TRegister> name={"lastName"} label={"First Name"}
-                                                             placeholder={"John"}/>
-                            </div>
-                        </div>
+        <div className="md:w-2/3 flex flex-col">
+            <CardHeader className="text-center py-4 px-8">
+                <CardTitle className="text-2xl font-bold">Create an Account</CardTitle>
+                <CardDescription className="text-gray-500 mt-1">
+                    Just a few steps away. Create your account to get started!
+                </CardDescription>
+            </CardHeader>
 
+            <GenericForm
+                ref={formRef}
+                initialValues={initialValues}
+                schema={registerSchema}
+                onSubmit={onSubmit}
+            >
+                <CardContent className="space-y-4 px-8 pb-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <GenericForm.Text<TRegister> type={"email"} name={"firstName"} label={"First Name"}
-                                                         placeholder={"John"}/>
+                            <GenericForm.Text<TRegister>
+                                name={"name"}
+                                label={"First Name"}
+                                placeholder={"John"}
+                                autoComplete="given-name"
+                                required
+                            />
                         </div>
-
                         <div className="space-y-2">
-                            <Label htmlFor="password" className="text-sm font-medium">
-                                Password
-                            </Label>
-                            <div className="relative">
-                                <GenericForm.PasswordField<TRegister> name="password" label={"Password"} required
-                                                                      placeholder="********" showStrength showIcon showMessage />
-
-                            </div>
+                            <GenericForm.Text<TRegister>
+                                name={"lastName"}
+                                label={"Last Name"}
+                                placeholder={"Doe"}
+                                autoComplete="family-name"
+                                required
+                            />
                         </div>
+                    </div>
 
-                        <div className="space-y-2">
-                            <GenericForm.PasswordField<TRegister> name="confirmPassword" label={"Confirm Password"} required
-                                                                  placeholder="********" />
-                        </div>
+                    <div className="space-y-2">
+                        <GenericForm.Text<TRegister>
+                            type={"email"}
+                            name={"email"}
+                            label={"Email"}
+                            placeholder={"example@example.com"}
+                            autoComplete="email"
+                            required
+                        />
+                    </div>
 
-                        <div className="flex items-start space-x-2 pt-2">
-                            <GenericForm.Checkbox<TRegister> name={"terms"} label={"I agree to the Terms of Service and Privacy Policy"}/>
-                        </div>
-                    </CardContent>
-                    <CardFooter className="flex flex-col gap-4">
-                        <Button
-                            type="submit"
-                            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md"
-                        >
-                            Create Account
-                        </Button>
-                        <p className="text-center text-sm text-gray-500">
-                            Already have an account?{" "}
-                            <a href="#" className="text-indigo-600 hover:text-indigo-800 font-medium">
-                                Sign in
-                            </a>
-                        </p>
-                    </CardFooter>
-                </GenericForm>
-            </Card>
+                    <div className="space-y-2">
+                        <GenericForm.PasswordField<TRegister>
+                            name="password"
+                            label={"Password"}
+                            required
+                            placeholder="At least 8 characters"
+                            showStrength
+                            showMessage
+                            autoComplete="new-password"
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <GenericForm.PasswordField<TRegister>
+                            name="confirmPassword"
+                            label={"Confirm Password"}
+                            required
+                            placeholder="Confirm your password"
+                            autoComplete="new-password"
+                        />
+                    </div>
+
+                    <div className="flex items-start space-x-2 pt-2">
+                        <GenericForm.Checkbox<TRegister>
+                            name={"acceptedTerms"}
+                            label={
+                                "Agree to the terms and conditions"
+                            }
+                            required
+                        />
+                    </div>
+                </CardContent>
+
+                <CardFooter className="flex flex-col gap-4 px-8 pb-6">
+                    <Button
+                        type="submit"
+                        className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold transition-all duration-300 rounded-lg py-3"
+                        loading={isSubmitting}
+                    >
+                        Create Account
+                    </Button>
+
+                    <p className="text-center text-sm text-gray-500">
+                        Already have an account?{" "}
+                        <Link href="/login"
+                              className="text-orange-600 hover:text-orange-800 font-medium hover:underline">
+                            Sign in
+                        </Link>
+                    </p>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        className="w-full border-orange-500 text-orange-600 hover:bg-orange-50 hover:text-orange-700 font-semibold transition-all duration-300 rounded-lg py-3"
+                        onClick={fillOutForm}
+                    >
+                        🧪 Fill Out Form (Dev)
+                    </Button>
+                </CardFooter>
+            </GenericForm>
         </div>
     )
 }
-

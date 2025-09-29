@@ -1,13 +1,13 @@
 import { Button } from "../ui/button";
 import { Heart, ShoppingBag } from "lucide-react";
+import Logo from "@/app/assets/pngs/Logo";
 
 export default function Navbar() {
     return (
         <header className="border-b w-full">
             <div className="container flex justify-between items-center mx-auto h-16 px-3">
                 <h1 className="text-2xl font-black flex items-center">
-                    {/*<Logo />*/}
-                    Panda Mart
+                   <Logo/>
                 </h1>
                 <div className="max-w-md  flex-grow">
                     <input
